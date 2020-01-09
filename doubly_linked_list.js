@@ -8,112 +8,113 @@ var DoublyLinkedList = function () {
     this.tail = null;
 
     this.size = function () {
-
-        if (this.head === null) {
-            return 0
-        } else if (this.head.next === null) {
-            return 1
-        }
-
-        let current = this.head.next
         let i = 0
-        while (current !== this.head) {
+        let current = this.head
+        while (current) {
             current = current.next
             i++
         }
-        return i + 1
-
+        return i
     }
 
     this.add = function (element) {
-        const node = new Node(element)
-        if (this.head === null) {
+        const node = new Node(element, this.tail)
+        if (this.head) {
+            let temp = this.head
+            while (temp.next !== null) {
+                temp = temp.next
+            }
+            node.prev = temp
+            temp.next = node
+            this.tail = node
+        } else {
             this.head = node
             this.tail = node
-            this.head.next = this.tail
-            this.tail.next = this.head
-            return node
-        } else if (this.head && this.head.next === null) {
-            node.prev = this.head
-            node.next = this.head
-            this.tail = node
-            this.head.next = this.tail
-            this.head.prev = this.tail
-            return node
         }
-
-        let current = this.head.next
-        while (current.next !== this.head) {
-            current = current.next
-        }
-        node.next = this.head
-        node.prev = current
-        current.next = node
-        this.tail = node
-        this.head.prev = this.tail
-
-        return node
+        return true
     }
 
-
-
     this.remove = function (element) {
-        const node = new Node(element)
-        let current
+
         if (this.size() === 0) {
             return null
         }
-        if (this.head.data === node.data) {
-            if (this.size() === 1) {
-                this.head = null
-                this.tail = null
-                return null
-            }
-            current = this.head.next
-            current.prev = this.tail
-            this.head = current
-            this.tail.next = this.head
-        }
+
         let previous = this.head
-        current = previous.next
-        while (current !== this.head) {
-            if (current.data === element) {
-                previous.next = current.next
+        let current = this.head.next
+        let found = false
+
+        if (this.size() === 1 && this.head.data === element) {
+            this.head = null
+            this.tail = null
+            return [true, element]
+        } else if (this.head.data === element) {
+            current.prev = null
+            this.head = current
+            return [true, element]
+        }
+
+        while (current) {
+            if (current.next === null & current.data === element) {
+                current = previous
+                current.next = null
+                this.tail = current
+                return [true, element]
+            } else if (current.data === element) {
                 current = current.next
+                previous.next = current
                 current.prev = previous
+                found = true
             } else {
                 previous = current
                 current = current.next
             }
         }
-        this.head = current
-        this.tail = current.prev
-        return '////////////////////////'
+
+        return [found, element]
     }
-}
 
+    this.reverse = function () {
+        let temp = this.head
+        this.head = this.tail
+        this.tail = temp
 
+        let current = this.head
+        while (current) {
+            let temp = current.next
+            current.next = current.prev
+            current.prev = temp
+            current = current.next
+        }
+    }
 
-const doublyLinkedList = new DoublyLinkedList
-doublyLinkedList.add('d')
-// doublyLinkedList.add('b')
-// doublyLinkedList.add('a')
-doublyLinkedList.add('c')
-// doublyLinkedList.add('d')
-// doublyLinkedList.add('a')
-// doublyLinkedList.add('a')
+};
+
+let doublyLinkedList = new DoublyLinkedList
+
 doublyLinkedList.add('a')
+doublyLinkedList.add('b')
+doublyLinkedList.add('c')
+doublyLinkedList.add('d')
 
-
-console.log(doublyLinkedList.remove('a'))
+// console.log(doublyLinkedList.remove('x'))
+console.log(doublyLinkedList.reverse())
 
 console.log('HEAD: ', doublyLinkedList.head)
 console.log('TAIL: ', doublyLinkedList.tail)
 console.log(doublyLinkedList.size())
+
+console.log('//////////////////////////')
 
 let current = doublyLinkedList.head
 for (let i = 0; i < doublyLinkedList.size(); i++) {
     console.log(current.data)
     current = current.next
 }
+console.log('//////////////////////////')
 
+current = doublyLinkedList.tail
+for (let i = doublyLinkedList.size() - 1; i >= 0; i--) {
+    console.log(current.data)
+    current = current.prev
+}
