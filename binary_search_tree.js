@@ -6,6 +6,8 @@ function Node(value) {
 }
 function BinarySearchTree() {
     this.root = null;
+    this.minHeight = null
+    this.maxHeight = null
 
     this.add = function (element, root = this.root, parent = null) {
         const node = new Node(element)
@@ -64,6 +66,79 @@ function BinarySearchTree() {
             return this.findMax(root)
         }
     }
+
+    this.isPresent = function (element, root = this.root) {
+        if (root === null) {
+            return false
+        } else if (element === root.value) {
+            return true
+        }
+
+        if (element < root.value) {
+            root = root.left
+            return this.isPresent(element, root)
+        } else if (element > root.value) {
+            root = root.right
+            return this.isPresent(element, root)
+        }
+    }
+
+    this.findMaxHeight = function (count = 1, root = this.root) {
+        if (root === null) {
+            return -1
+        }
+        if (root.left || root.right) {
+            count++
+        }
+        if (root.left) {
+            this.findMaxHeight(count, root.left)
+        }
+        if (root.right) {
+            this.findMaxHeight(count, root.right)
+        }
+        if (count > this.maxHeight) {
+            this.maxHeight = count
+        }
+    }
+}
+
+function isBinaryTree(tree) {
+    const root = tree.root
+    const value = root.value
+
+    let left
+    if (root.left) {
+        left = new BinarySearchTree
+        left.root = root.left
+    }
+    let right
+    if (root.right) {
+        right = new BinarySearchTree
+        right.root = root.right
+    }
+
+    console.log('ROOT: ', root.value)
+    left && console.log('LEFT: ', left.root.value)
+    right && console.log('RIGHT: ', right.root.value)
+    console.log('//////////////////')
+
+    if (root === null) {
+        return false
+    }
+    if (left && left.findMax() > value) {
+        return false
+    }
+    if (right && right.findMin() < value) {
+        return false
+    }
+    if (left && !isBinaryTree(left)) {
+        return false
+    }
+    if (right && !isBinaryTree(right)) {
+        return false
+    }
+
+    return true
 }
 
 let binarSearchTree = new BinarySearchTree()
@@ -77,7 +152,14 @@ binarSearchTree.add(6)
 binarSearchTree.add(4)
 binarSearchTree.add(7)
 
-console.log(binarSearchTree.findMin())
-console.log(binarSearchTree.findMax())
 
-displayTree(binarSearchTree)
+// console.log(binarSearchTree.findMin())
+// console.log(binarSearchTree.findMax())
+// console.log(binarSearchTree.isPresent(13))
+
+console.log(binarSearchTree.findMaxHeight())
+console.log('MAX HEIGHT: ', binarSearchTree.maxHeight)
+
+// displayTree(binarSearchTree)
+
+// console.log(isBinaryTree(binarSearchTree))
