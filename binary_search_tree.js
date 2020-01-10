@@ -4,6 +4,30 @@ function Node(value) {
     this.left = null;
     this.right = null;
 }
+function Queue() {
+    var collection = [];
+    this.print = function () {
+        console.log(collection);
+    };
+    this.get = function () {
+        return collection
+    }
+    this.enqueue = function (item) {
+        collection.push(item)
+    }
+    this.dequeue = function () {
+        return collection.shift()
+    }
+    this.front = function () {
+        return collection[0]
+    }
+    this.size = function () {
+        return collection.length
+    }
+    this.isEmpty = function () {
+        return collection.length === 0
+    }
+}
 function BinarySearchTree() {
     this.root = null;
     this.minHeight = null
@@ -166,6 +190,9 @@ function BinarySearchTree() {
     }
 
     this.preOrder = function (root = this.root, result = []) {
+        if (root === null) {
+            return null
+        }
         result.push(root.value)
         if (root.left) {
             this.preOrder(root.left, result)
@@ -178,6 +205,9 @@ function BinarySearchTree() {
     }
 
     this.postOrder = function (root = this.root, result = []) {
+        if (root === null) {
+            return null
+        }
         if (root.left) {
             this.postOrder(root.left, result)
         }
@@ -187,6 +217,102 @@ function BinarySearchTree() {
         result.push(root.value)
 
         return result
+    }
+
+    this.levelOrder = function (root = this.root, result = []) {
+        if (root === null) {
+            return null
+        }
+        const queue = new Queue
+        queue.enqueue(root)
+        while (queue.size() !== 0) {
+            let node = queue.dequeue()
+            result.push(node.value)
+            if (node.left) {
+                queue.enqueue(node.left)
+            }
+            if (node.right) {
+                queue.enqueue(node.right)
+            }
+        }
+        return result
+    }
+
+    this.reverseLevelOrder = function (root = this.root, result = []) {
+        if (root === null) {
+            return null
+        }
+        const queue = new Queue
+        queue.enqueue(root)
+        while (queue.size() !== 0) {
+            let node = queue.dequeue()
+            result.push(node.value)
+            if (node.right) {
+                queue.enqueue(node.right)
+            }
+            if (node.left) {
+                queue.enqueue(node.left)
+            }
+        }
+        return result
+    }
+
+    this.remove = function (element, parent = this.root) {
+        let root = this.root
+        // CHECK TO SEE IF ELEMENT PRESENT IN TREE
+        if (!this.isPresent(element)) {
+            return null
+        }
+        //IF ELEMENT IS ROOT THEN ROOT = NULL
+        if (!root.left && !root.right) {
+            this.root = null
+        }
+        //LOOP TO FIND ELEMENT
+        while (root.value !== element) {
+            parent = root
+            if (element < root.value) {
+                root = root.left
+            } else if (element > root.value) {
+                root = root.right
+            }
+        }
+        //CALCULATE NUMBER OF CHILDREN AND REMOVE ACCORDINGLY
+        let children = (root.left ? 1 : 0) + (root.right ? 1 : 0)
+        if (children === 0) {
+            if (parent.value > root.value) {
+                parent.left = null
+                root = null
+            } else if (parent.value < root.value) {
+                parent.right = null
+                root = null
+            }
+        } else if (children === 1) {
+            if (parent === this.root) {
+                if (this.root.right) {
+                    this.root = this.root.right
+                } else {
+                    this.root = this.root.left
+                }
+            }
+            if (parent.value > root.value) {
+                if (root.left) {
+                    parent.left = root.left
+                    root = null
+                } else if (root.right) {
+                    parent.left = root.right
+                    root = null
+                }
+            } else if (parent.value < root.value) {
+                if (root.left) {
+                    parent.right = root.left
+                    root = null
+                } else if (root.right) {
+                    parent.right = root.right
+                    root = null
+                }
+            }
+        }
+        return true
     }
 }
 
@@ -230,15 +356,15 @@ function isBinaryTree(tree) {
 }
 
 let binarSearchTree = new BinarySearchTree()
-binarSearchTree.add(8)
 binarSearchTree.add(3)
-binarSearchTree.add(10)
-binarSearchTree.add(14)
-binarSearchTree.add(13)
-binarSearchTree.add(1)
-binarSearchTree.add(6)
-binarSearchTree.add(4)
-binarSearchTree.add(7)
+binarSearchTree.add(8)
+// binarSearchTree.add(10)
+// binarSearchTree.add(14)
+// binarSearchTree.add(13)
+// binarSearchTree.add(1)
+// binarSearchTree.add(6)
+// binarSearchTree.add(4)
+// binarSearchTree.add(7)
 
 
 // console.log(binarSearchTree.findMin())
@@ -252,10 +378,16 @@ binarSearchTree.add(7)
 
 // console.log(binarSearchTree.isBalanced())
 
-console.log(binarSearchTree.inOrder())
-console.log(binarSearchTree.preOrder())
-console.log(binarSearchTree.postOrder())
+// console.log(binarSearchTree.inOrder())
+// console.log(binarSearchTree.preOrder())
+// console.log(binarSearchTree.postOrder())
+
+// console.log(binarSearchTree.levelOrder())
+// console.log(binarSearchTree.reverseLevelOrder())
+
+// console.log(binarSearchTree.remove(4))
+// console.log(binarSearchTree.remove(6))
+console.log(binarSearchTree.remove(8))
 
 // displayTree(binarSearchTree)
-
-// console.log(isBinaryTree(binarSearchTree))
+console.log(isBinaryTree(binarSearchTree))
