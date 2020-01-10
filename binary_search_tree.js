@@ -83,7 +83,7 @@ function BinarySearchTree() {
         }
     }
 
-    this.findMaxHeight = function (count = 1, root = this.root) {
+    this.findMaxHeight = function (count = 0, root = this.root) {
         if (root === null) {
             return -1
         }
@@ -96,9 +96,97 @@ function BinarySearchTree() {
         if (root.right) {
             this.findMaxHeight(count, root.right)
         }
-        if (count > this.maxHeight) {
-            this.maxHeight = count
+        if (!root.left && !root.right) {
+            if (count > this.maxHeight) {
+                this.maxHeight = count
+            }
         }
+    }
+
+    this.getMaxHeight = function () {
+        this.findMaxHeight()
+        return this.maxHeight
+    }
+
+    this.findMinHeight = function (count = 0, root = this.root) {
+        if (root === null) {
+            return -1
+        }
+        if (root.left || root.right) {
+            count++
+        }
+        if (root.left) {
+            this.findMinHeight(count, root.left)
+        }
+        if (root.right) {
+            this.findMinHeight(count, root.right)
+        }
+        if (!root.left && !root.right) {
+            if (this.minHeight === null) {
+                this.minHeight = count
+            } else if (count < this.minHeight) {
+                this.minHeight = count
+            }
+        }
+    }
+
+    this.getMinHeight = function () {
+        this.findMinHeight()
+        return this.minHeight
+    }
+
+    this.isBalanced = function () {
+        this.findMinHeight()
+        this.findMaxHeight()
+
+        if (this.maxHeight === 1) {
+            return true
+        }
+
+        const difference = this.maxHeight - this.minHeight
+        if (!this.root.left || !this.root.right || difference > 1) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    this.inOrder = function (root = this.root, result = []) {
+        if (root === null) {
+            return null
+        }
+        if (root.left) {
+            this.inOrder(root.left, result)
+        }
+        result.push(root.value)
+        if (root.right) {
+            this.inOrder(root.right, result)
+        }
+        return result
+    }
+
+    this.preOrder = function (root = this.root, result = []) {
+        result.push(root.value)
+        if (root.left) {
+            this.preOrder(root.left, result)
+        }
+        if (root.right) {
+            this.preOrder(root.right, result)
+        }
+
+        return result
+    }
+
+    this.postOrder = function (root = this.root, result = []) {
+        if (root.left) {
+            this.postOrder(root.left, result)
+        }
+        if (root.right) {
+            this.postOrder(root.right, result)
+        }
+        result.push(root.value)
+
+        return result
     }
 }
 
@@ -157,8 +245,16 @@ binarSearchTree.add(7)
 // console.log(binarSearchTree.findMax())
 // console.log(binarSearchTree.isPresent(13))
 
-console.log(binarSearchTree.findMaxHeight())
-console.log('MAX HEIGHT: ', binarSearchTree.maxHeight)
+// console.log(binarSearchTree.getMaxHeight())
+// console.log(binarSearchTree.getMinHeight())
+// console.log('MAX HEIGHT: ', binarSearchTree.maxHeight)
+// console.log('MIN HEIGHT: ', binarSearchTree.minHeight)
+
+// console.log(binarSearchTree.isBalanced())
+
+console.log(binarSearchTree.inOrder())
+console.log(binarSearchTree.preOrder())
+console.log(binarSearchTree.postOrder())
 
 // displayTree(binarSearchTree)
 
