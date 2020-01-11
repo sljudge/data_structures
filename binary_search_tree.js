@@ -71,11 +71,14 @@ function BinarySearchTree() {
         }
 
         if (root.left === null) {
-            return root.value
+            return root
         } else {
             root = root.left
             return this.findMin(root)
         }
+    }
+    this.getMin = function () {
+        return this.findMin().value
     }
 
     this.findMax = function (root = this.root) {
@@ -84,11 +87,14 @@ function BinarySearchTree() {
         }
 
         if (root.right === null) {
-            return root.value
+            return root
         } else {
             root = root.right
             return this.findMax(root)
         }
+    }
+    this.getMax = function () {
+        return this.findMax().value
     }
 
     this.isPresent = function (element, root = this.root) {
@@ -311,6 +317,44 @@ function BinarySearchTree() {
                     root = null
                 }
             }
+        } else if (children === 2) {
+            let rightSubTree = root.right
+            let leftSubTree = root.left
+            let replacementNode
+            //FIND SMALLEST ELEMENT OF LEFT SUB TREE, REMOVE AND SET PARENT.LEFT TO NULL
+            if (rightSubTree.left) {
+                let parentOfReplacement = rightSubTree
+                replacementNode = rightSubTree.left
+                while (replacementNode.left) {
+                    parentOfReplacement = replacementNode
+                    replacementNode = replacementNode.left
+                }
+                parentOfReplacement.left = null
+            } else {
+                replacementNode = rightSubTree
+            }
+            //ATTACH LEFT SUBTREE TO REPLACEMENT NODE
+            replacementNode.left = leftSubTree
+            //DETERMINE NODE TO REJOIN RIGHT SUBTREE BY FINDING MAX
+            if (replacementNode.right) {
+                let joinNode = replacementNode.right
+                while (joinNode.right) {
+                    joinNode = joinNode.right
+                }
+                joinNode.right = rightSubTree
+            } else if (rightSubTree === replacementNode) {
+                replacementNode.right = null
+                this.root = replacementNode
+            }
+            else {
+                replacementNode.right = rightSubTree
+            }
+            //RE-ATTACH MODIFIED TREE TO PARENT
+            parent.right = replacementNode
+
+            console.log('ROOT: ', root.value)
+            console.log('PARENT: ', parent.value)
+            console.log('REPLACEMENT: ', replacementNode.value)
         }
         return true
     }
@@ -356,8 +400,8 @@ function isBinaryTree(tree) {
 }
 
 let binarSearchTree = new BinarySearchTree()
-binarSearchTree.add(3)
-binarSearchTree.add(8)
+// binarSearchTree.add(8)
+// binarSearchTree.add(3)
 // binarSearchTree.add(10)
 // binarSearchTree.add(14)
 // binarSearchTree.add(13)
@@ -365,6 +409,18 @@ binarSearchTree.add(8)
 // binarSearchTree.add(6)
 // binarSearchTree.add(4)
 // binarSearchTree.add(7)
+
+binarSearchTree.add(20)
+binarSearchTree.add(10)
+binarSearchTree.add(3)
+binarSearchTree.add(2)
+binarSearchTree.add(5)
+binarSearchTree.add(15)
+binarSearchTree.add(12)
+binarSearchTree.add(13)
+binarSearchTree.add(19)
+binarSearchTree.add(17)
+binarSearchTree.add(18)
 
 
 // console.log(binarSearchTree.findMin())
@@ -385,9 +441,9 @@ binarSearchTree.add(8)
 // console.log(binarSearchTree.levelOrder())
 // console.log(binarSearchTree.reverseLevelOrder())
 
-// console.log(binarSearchTree.remove(4))
+// console.log(binarSearchTree.remove(8))
 // console.log(binarSearchTree.remove(6))
-console.log(binarSearchTree.remove(8))
+console.log(binarSearchTree.remove(15))
 
 // displayTree(binarSearchTree)
 console.log(isBinaryTree(binarSearchTree))
