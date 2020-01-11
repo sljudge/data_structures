@@ -335,28 +335,39 @@ function BinarySearchTree() {
             }
             //ATTACH LEFT SUBTREE TO REPLACEMENT NODE
             replacementNode.left = leftSubTree
-            //DETERMINE NODE TO REJOIN RIGHT SUBTREE BY FINDING MAX
+            //DETERMINE NODE TO REJOIN RIGHT SUBTREE BY FINDING MAX VALUE IN RIGHT SUBTREE
             if (replacementNode.right) {
                 let joinNode = replacementNode.right
                 while (joinNode.right) {
                     joinNode = joinNode.right
                 }
                 joinNode.right = rightSubTree
-            } else if (rightSubTree === replacementNode) {
+            } else if (rightSubTree === replacementNode) { //TREE OF LENGTH 3
                 replacementNode.right = null
                 this.root = replacementNode
             }
-            else {
+            else { //NO RIGHT SUBTREE
                 replacementNode.right = rightSubTree
             }
             //RE-ATTACH MODIFIED TREE TO PARENT
             parent.right = replacementNode
-
-            console.log('ROOT: ', root.value)
-            console.log('PARENT: ', parent.value)
-            console.log('REPLACEMENT: ', replacementNode.value)
         }
         return true
+    }
+
+    this.invert = function (root = this.root, result = []) {
+        if (root === null) {
+            return null
+        }
+        let temp = root.right
+        root.right = root.left
+        root.left = temp
+        if (root.left) {
+            this.invert(root.left)
+        }
+        if (root.right) {
+            this.invert(root.right)
+        }
     }
 }
 
@@ -400,27 +411,29 @@ function isBinaryTree(tree) {
 }
 
 let binarSearchTree = new BinarySearchTree()
-// binarSearchTree.add(8)
-// binarSearchTree.add(3)
-// binarSearchTree.add(10)
-// binarSearchTree.add(14)
-// binarSearchTree.add(13)
-// binarSearchTree.add(1)
-// binarSearchTree.add(6)
-// binarSearchTree.add(4)
-// binarSearchTree.add(7)
-
-binarSearchTree.add(20)
-binarSearchTree.add(10)
+binarSearchTree.add(8)
 binarSearchTree.add(3)
-binarSearchTree.add(2)
-binarSearchTree.add(5)
-binarSearchTree.add(15)
-binarSearchTree.add(12)
+binarSearchTree.add(10)
+binarSearchTree.add(14)
 binarSearchTree.add(13)
-binarSearchTree.add(19)
-binarSearchTree.add(17)
-binarSearchTree.add(18)
+binarSearchTree.add(15)
+binarSearchTree.add(1)
+binarSearchTree.add(6)
+binarSearchTree.add(4)
+binarSearchTree.add(7)
+binarSearchTree.add(9)
+
+// binarSearchTree.add(20)
+// binarSearchTree.add(10)
+// binarSearchTree.add(3)
+// binarSearchTree.add(2)
+// binarSearchTree.add(5)
+// binarSearchTree.add(15)
+// binarSearchTree.add(12)
+// binarSearchTree.add(13)
+// binarSearchTree.add(19)
+// binarSearchTree.add(17)
+// binarSearchTree.add(18)
 
 
 // console.log(binarSearchTree.findMin())
@@ -434,16 +447,18 @@ binarSearchTree.add(18)
 
 // console.log(binarSearchTree.isBalanced())
 
-// console.log(binarSearchTree.inOrder())
-// console.log(binarSearchTree.preOrder())
-// console.log(binarSearchTree.postOrder())
+// console.log('IN ORDER: ', binarSearchTree.inOrder())
+// console.log('PRE ORDER: ', binarSearchTree.preOrder())
+// console.log('POST ORDER: ', binarSearchTree.postOrder())
+
+console.log('INVERT: ', binarSearchTree.invert())
 
 // console.log(binarSearchTree.levelOrder())
 // console.log(binarSearchTree.reverseLevelOrder())
 
 // console.log(binarSearchTree.remove(8))
 // console.log(binarSearchTree.remove(6))
-console.log(binarSearchTree.remove(15))
+// console.log(binarSearchTree.remove(15))
 
-// displayTree(binarSearchTree)
+displayTree(binarSearchTree)
 console.log(isBinaryTree(binarSearchTree))
