@@ -1,57 +1,81 @@
 var MaxHeap = function () {
-    this.data = [null]
+    this.data = []
+
 
     this.size = function () {
         return this.data.length
     }
 
     this.print = function () {
-        return this.data.slice(1)
+        return this.data
     }
 
-    this.heapify = function (i) {
-        let parentIndex = Math.floor(i / 2)
+    this.heapify = function (arr) {
+        const lastParentIndex = Math.floor(arr.length / 2) - 1
 
-        if (i > 1) {
-            if (this.data[i] > this.data[parentIndex]) {
-                let temp = this.data[parentIndex]
-                this.data[parentIndex] = this.data[i]
-                this.data[i] = temp
-                return this.heapify(parentIndex)
+        const swap = (arr, i) => {
+            const parent = arr[i]
+            const leftChildIndex = i * 2 + 1
+            const rightChildIndex = i * 2 + 2
+            const leftChild = arr[leftChildIndex]
+            const rightChild = arr[rightChildIndex]
+
+            if (parent < leftChild || parent < rightChild) {
+                if (rightChild < leftChild) {
+                    arr[i] = leftChild
+                    arr[leftChildIndex] = parent
+                    if (leftChildIndex <= lastParentIndex) {
+                        swap(arr, leftChildIndex)
+                    }
+                } else {
+                    arr[i] = rightChild
+                    arr[rightChildIndex] = parent
+                    if (rightChildIndex <= lastParentIndex) {
+                        swap(arr, rightChildIndex)
+                    }
+                }
             }
         }
+        for (let i = lastParentIndex; i >= 0; i--) {
+            swap(arr, i)
+        }
+        this.data = arr
+        return arr
     }
 
     this.insert = function (element) {
-        let i = this.size()
         this.data.push(element)
-
-        this.heapify(i)
+        this.heapify(this.data)
+    }
+    this.remove = function () {
+        const greatestElement = this.data.shift()
+        this.heapify(this.data)
+        return greatestElement
     }
 
-    this.isHeap = function (heap = this.data, i = 1) {
+    this.isHeap = function (heap = this.data, i = 0) {
+        console.log('HEAP: ', heap)
         let parent = heap[i]
-        let leftChild = heap[i * 2]
-        let rightChild = heap[i * 2 + 1]
+        let leftChild = heap[i * 2 + 1]
+        let rightChild = heap[i * 2 + 2]
         console.log('parent: ', parent)
         console.log('leftChild: ', leftChild)
         console.log('rightChild: ', rightChild)
-        console.log('//////////////////////////////')
+        console.log('------------------------------------------')
         if (parent < leftChild || parent < rightChild) {
             return false
+        } else {
+            if (leftChild) {
+                this.isHeap(heap, i * 2 + 1)
+            }
+            if (rightChild) {
+                this.isHeap(heap, i * 2 + 2)
+            }
+            return true
         }
-        if (leftChild) {
-            this.isHeap(heap, i * 2)
-        }
-        if (rightChild) {
-            this.isHeap(heap, i * 2 + 1)
-        }
-        return true
     }
 
-    // this.remove = function () {
-    //     let left = 
-    // }
+
 };
 
 //17 15 13 9 6 5 10 4 8 3 1
@@ -61,14 +85,22 @@ let heap = new MaxHeap
 // for (let i of [100, 32, 50, 51, 700]) {
 //     heap.insert(i)
 // }
-for (let i of [1, 3, 5, 4, 6, 13, 10, 9, 8, 15, 17]) {
-    heap.insert(i)
-}
+const arr = [1, 3, 5, 4, 6, 13, 10, 9, 8, 15, 17]
+console.log('ARRAY: ', arr)
+console.log('------------------------------------------')
+// for (let i of arr) {
+//     heap.insert(i)
+// }
+console.log('HEAPIFY: ', heap.heapify(arr))
+console.log('------------------------------------------')
+
 // [16,14,10,8,7,9,3,2,4,1]
 // for (let i of [7, 16, 10, 4, 1, 3, 9, 2, 8, 14]) {
 //     heap.insert(i)
 // }
+console.log(heap.remove())
+console.log(heap.insert(17))
+
 console.log(heap.print())
 console.log(heap.isHeap())
-// console.log(heap.data.slice(1))
 
