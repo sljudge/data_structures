@@ -19,15 +19,20 @@ var MaxHeap = function () {
             const rightChildIndex = i * 2 + 2
             const leftChild = arr[leftChildIndex]
             const rightChild = arr[rightChildIndex]
+            // console.log('parent: ', parent)
+            // console.log('leftChild: ', leftChild)
+            // console.log('rightChild: ', rightChild)
+            // console.log(arr)
+            // console.log('------------------------------------------')
 
             if (parent < leftChild || parent < rightChild) {
-                if (rightChild < leftChild) {
+                if (rightChild < leftChild || rightChild === undefined) {
                     arr[i] = leftChild
                     arr[leftChildIndex] = parent
                     if (leftChildIndex <= lastParentIndex) {
                         swap(arr, leftChildIndex)
                     }
-                } else {
+                } else if (leftChild < rightChild || leftChild === undefined) {
                     arr[i] = rightChild
                     arr[rightChildIndex] = parent
                     if (rightChildIndex <= lastParentIndex) {
@@ -98,9 +103,15 @@ console.log('------------------------------------------')
 // for (let i of [7, 16, 10, 4, 1, 3, 9, 2, 8, 14]) {
 //     heap.insert(i)
 // }
-console.log(heap.remove())
+// console.log(heap.remove())
+// console.log(heap.remove())
+// console.log(heap.print())
+console.log(heap.insert(18))
+console.log(heap.insert(2))
+console.log(heap.insert(18))
+console.log(heap.insert(9))
 console.log(heap.insert(17))
+// console.log(heap.print())
 
-console.log(heap.print())
-console.log(heap.isHeap())
+console.log('IS HEAP: ', heap.isHeap())
 
