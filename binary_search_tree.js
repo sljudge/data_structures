@@ -1,32 +1,10 @@
+const Queue = require('./queue')
+
 var displayTree = tree => console.log(JSON.stringify(tree, null, 2));
 function Node(value) {
     this.value = value;
     this.left = null;
     this.right = null;
-}
-function Queue() {
-    var collection = [];
-    this.print = function () {
-        console.log(collection);
-    };
-    this.get = function () {
-        return collection
-    }
-    this.enqueue = function (item) {
-        collection.push(item)
-    }
-    this.dequeue = function () {
-        return collection.shift()
-    }
-    this.front = function () {
-        return collection[0]
-    }
-    this.size = function () {
-        return collection.length
-    }
-    this.isEmpty = function () {
-        return collection.length === 0
-    }
 }
 function BinarySearchTree() {
     this.root = null;

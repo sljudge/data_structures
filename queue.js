@@ -1,22 +1,27 @@
 function Queue() {
-    var collection = [];
+    this.collection = [];
     this.print = function () {
-        console.log(collection);
+        console.log(this.collection);
     };
     this.enqueue = function (item) {
-        collection.push(item)
+        this.collection.push(item)
     }
     this.dequeue = function () {
-        return collection.shift()
+        return this.collection.shift()
     }
     this.front = function () {
-        return collection[0]
+        return this.collection[0]
     }
     this.size = function () {
-        return collection.length
+        return this.collection.length
     }
     this.isEmpty = function () {
-        return collection.length === 0
+        return this.collection.length === 0
+    }
+    this.clear = function () {
+        this.collection = []
     }
 }
+
+module.exports = Queue
 

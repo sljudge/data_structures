@@ -19,11 +19,6 @@ var MaxHeap = function () {
             const rightChildIndex = i * 2 + 2
             const leftChild = arr[leftChildIndex]
             const rightChild = arr[rightChildIndex]
-            // console.log('parent: ', parent)
-            // console.log('leftChild: ', leftChild)
-            // console.log('rightChild: ', rightChild)
-            // console.log(arr)
-            // console.log('------------------------------------------')
 
             if (parent < leftChild || parent < rightChild) {
                 if (rightChild < leftChild || rightChild === undefined) {

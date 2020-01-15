@@ -47,26 +47,26 @@ class CircularQueue {
     }
 }
 
-let circularQueue = new CircularQueue(5)
-circularQueue.print()
-let x = 0
-let y = 0
-for (x; x < 5; x++) {
-    console.log('enq: ', circularQueue.enqueue(x))
-}
-circularQueue.print()
-console.log('////////////')
-for (y; y < 3; y++) {
-    console.log('deq: ', circularQueue.dequeue(y))
-}
-for (x; x < 9; x++) {
-    console.log('enq: ', circularQueue.enqueue(x))
-}
+// let circularQueue = new CircularQueue(5)
+// circularQueue.print()
+// let x = 0
+// let y = 0
+// for (x; x < 5; x++) {
+//     console.log('enq: ', circularQueue.enqueue(x))
+// }
+// circularQueue.print()
+// console.log('////////////')
+// for (y; y < 3; y++) {
+//     console.log('deq: ', circularQueue.dequeue(y))
+// }
+// for (x; x < 9; x++) {
+//     console.log('enq: ', circularQueue.enqueue(x))
+// }
 
-console.log('////////////')
-circularQueue.print()
-console.log(circularQueue.write)
-console.log(circularQueue.read)
+// console.log('////////////')
+// circularQueue.print()
+// console.log(circularQueue.write)
+// console.log(circularQueue.read)
 
 /*
     ALT
@@ -91,3 +91,6 @@ enqueue(item) {
     return null;
   }
 */
+
+module.exports = CircularQueue
+
