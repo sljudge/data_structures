@@ -71,7 +71,8 @@ const knightMoves = (start, end) => {
         }
         return start
     }
-    const getRoute = (trie, output = [[trie.x, trie.y]]) => {
+    // const getRoute = (trie, output = [[trie.x, trie.y]]) => {
+    const getRoute = (trie, output = [trie.key]) => {
         /*
         PERFORM TRIE SEARCH TO DETERMINE ROUTE
         */
@@ -80,12 +81,14 @@ const knightMoves = (start, end) => {
             let node = item[1]
             //IF CO-ORDINATES MATCH THE END SQUARE THEN SET ROUTE TO OUTPUT
             if (key === end.key) {
-                output.push([node.x, node.y])
+                // output.push([node.x, node.y])
+                output.push(node.key)
                 route = output
             }
             //IF THERE ARE FURTHER POSSIBLE MOVES TO EXPLORE THEN REPEAT, ADDING ON CURRENT COORDINATE TO OUTPUT
             else if (node.children.size > 0) {
-                getRoute(node, output.concat([[node.x, node.y]]))
+                // getRoute(node, output.concat([[node.x, node.y]]))
+                getRoute(node, output.concat([node.key]))
             }
         }
     }

@@ -21,13 +21,13 @@ var MaxHeap = function () {
             const rightChild = arr[rightChildIndex]
 
             if (parent < leftChild || parent < rightChild) {
-                if (rightChild < leftChild || rightChild === undefined) {
+                if (rightChild === undefined || rightChild < leftChild) {
                     arr[i] = leftChild
                     arr[leftChildIndex] = parent
                     if (leftChildIndex <= lastParentIndex) {
                         swap(arr, leftChildIndex)
                     }
-                } else if (leftChild < rightChild || leftChild === undefined) {
+                } else if (leftChild === undefined || leftChild < rightChild) {
                     arr[i] = rightChild
                     arr[rightChildIndex] = parent
                     if (rightChildIndex <= lastParentIndex) {
